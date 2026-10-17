@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>우리 반 1인 1역할 배정 시스템</title>
-  <meta name="description" content="초등학생 눈높이에 맞춘 귀엽고 산뜻한 학급 1인 1역할 무작위 배정 및 교실 게시판용 A4 인쇄 웹 애플리케이션">
-  <meta property="og:title" content="우리 반 1인 1역할 배정 시스템">
-  <meta property="og:description" content="초등학생 눈높이에 맞춘 귀엽고 산뜻한 학급 1인 1역할 무작위 배정 및 교실 게시판용 A4 인쇄 웹 애플리케이션">
+  <title>우리 반 1인 1역할 뽑기 대작전! 🎒🌈</title>
+  <meta name="description" content="초등 저학년 눈높이에 맞춘 아기자기하고 귀여운 학급 1인 1역할 무작위 배정 및 교실 게시판용 A4 인쇄 웹 애플리케이션">
+  <meta property="og:title" content="우리 반 1인 1역할 뽑기 대작전! 🎒🌈">
+  <meta property="og:description" content="초등 저학년 친구들을 위한 귀엽고 신나는 1인 1역할 배정 도우미">
   <meta property="og:type" content="website">
 
   <!-- 스타일시트 분리 연결 -->
@@ -14,138 +14,151 @@
 </head>
 <body>
 
-  <!-- =========================================================================
-       1. 화면용 웹 애플리케이션 메인 컨테이너
-       ========================================================================= -->
-  <div class="app-container">
+  <!-- 축하 꽃가루 폭죽 파티클 캔버스 -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="app-wrapper">
     
-    <!-- 상단 헤더 바 -->
-    <header class="header-bar">
-      <div class="brand-section">
-        <div class="school-emblem" aria-hidden="true">🏫</div>
+    <!-- =========================================================================
+         1. 아기자기한 교실 헤더
+         ========================================================================= -->
+    <header class="cute-header">
+      <div class="brand-group">
+        <div class="brand-icon-bubble" aria-hidden="true">🎒</div>
         <div class="brand-text">
-          <h1>우리 반 1인 1역할 배정 시스템</h1>
-          <button id="class-title-badge" class="class-title-badge" onclick="openManageModal()" title="학급 및 학기 정보 변경">
-            3학년 2반 · 2026학년도 1학기 ✏️
+          <h1>우리 반 1인 1역할 뽑기 대작전! 🌈</h1>
+          <button id="class-title-badge" class="class-sticker-btn" onclick="openManageModal()" title="학급 및 학기 정보 변경">
+            <span>🏫</span> <span id="class-badge-text">3학년 2반 · 2026학년도 1학기</span> <span>✏️</span>
           </button>
         </div>
       </div>
 
-      <!-- 상단 액션 버튼 그룹 (스프레드시트 연동, 인쇄, 관리) -->
-      <div class="header-actions">
-        <!-- 다음 단계 구글 스프레드시트(Apps Script) 연동 버튼 자리 -->
-        <button id="btn-sheet-load" class="btn btn-sheet-load" title="구글 스프레드시트에서 학생 및 역할 명단 불러오기">
-          <span class="btn-icon">🔄</span>
+      <!-- 상단 액션 버튼 그룹 (구글 시트 연동, A4 인쇄, 명단 관리) -->
+      <div class="header-action-group">
+        <button id="btn-sheet-load" class="btn-puffy btn-puffy-sheet-load" title="구글 스프레드시트에서 명단 불러오기">
+          <span>🔄</span>
           <span>시트 불러오기</span>
         </button>
-        <button id="btn-sheet-save" class="btn btn-sheet-save" title="현재 배정 결과를 구글 스프레드시트에 저장">
-          <span class="btn-icon">💾</span>
+        <button id="btn-sheet-save" class="btn-puffy btn-puffy-sheet-save" title="배정 결과를 구글 스프레드시트에 저장">
+          <span>💾</span>
           <span>시트에 결과 저장</span>
         </button>
-        <!-- 교실 게시판 부착용 A4 깔끔 인쇄 버튼 -->
-        <button id="btn-print" class="btn btn-print" title="A4 용지 규격으로 교실 게시판 부착용 인쇄">
-          <span class="btn-icon">🖨️</span>
+        <button id="btn-print" class="btn-puffy btn-puffy-print" title="A4 용지 규격으로 교실 게시판 부착용 인쇄">
+          <span>🖨️</span>
           <span>A4 인쇄 / PDF</span>
         </button>
-        <!-- 명단 및 역할 관리 버튼 -->
-        <button id="btn-manage" class="btn btn-secondary" title="학생 이름 및 역할 목록 직접 편집">
-          <span class="btn-icon">⚙️</span>
+        <button id="btn-manage" class="btn-puffy btn-puffy-manage" title="학생 이름 및 역할 목록 직접 편집">
+          <span>⚙️</span>
           <span>명단·역할 관리</span>
         </button>
       </div>
     </header>
 
-    <!-- 대시보드 컨트롤 카드 -->
+    <!-- =========================================================================
+         2. 메인 대시보드 알림판
+         ========================================================================= -->
     <main>
-      <section class="control-card">
-        <div class="control-summary-row">
-          <div class="status-pills">
-            <span class="status-badge">
-              총 학생: <strong id="stat-student-count">20명</strong>
+      <section class="bulletin-board">
+        <div class="board-top-row">
+          
+          <!-- 상태 뱃지 -->
+          <div class="cute-stat-chips">
+            <span class="stat-chip">
+              <span>👧</span> 총 학생: <strong id="stat-student-count">20명</strong>
             </span>
-            <span class="status-badge">
-              준비된 역할: <strong id="stat-role-count">20개</strong>
+            <span class="stat-chip">
+              <span>⭐</span> 준비된 역할: <strong id="stat-role-count">20개</strong>
             </span>
-            <span class="status-badge">
-              배정 완료: <strong id="stat-assigned-count">0명</strong>
+            <span class="stat-chip">
+              <span>🎉</span> 배정 완료: <strong id="stat-assigned-count">0명</strong>
             </span>
           </div>
 
-          <div class="actions-cta-group">
-            <!-- 핵심 기능: 역할 배정하기 버튼 -->
-            <button id="btn-shuffle" class="btn btn-big-shuffle">
-              <span class="btn-icon">🎲</span>
-              <span>역할 배정하기</span>
+          <!-- 메인 큰 버튼 (두근두근 역할 뽑기 시작!) -->
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <button id="btn-shuffle" class="btn-big-roll">
+              <span class="dice-icon">🎲</span>
+              <span>두근두근! 역할 뽑기 시작! ✨</span>
             </button>
-            <button id="btn-reset" class="btn btn-secondary" title="배정 결과 초기화">
-              <span class="btn-icon">↩️</span>
-              <span>초기화</span>
+            <button id="btn-reset" class="btn-puffy" style="background: #f5f5f4; border-color: #d6d3d1; color: #78716c;" title="배정 결과 초기화">
+              <span>↩️</span>
+              <span>다시 뽑기</span>
             </button>
           </div>
+
         </div>
 
-        <!-- 필터 및 보기 전환 툴바 -->
-        <div class="toolbar-row">
-          <div class="search-box">
-            <span class="search-icon" aria-hidden="true">🔍</span>
-            <input type="text" id="search-input" placeholder="학생 이름 또는 역할 검색..." autocomplete="off">
+        <!-- 필터 및 검색 툴바 -->
+        <div class="board-tool-row">
+          <div class="cute-search-box">
+            <span class="cute-search-icon" aria-hidden="true">🔍</span>
+            <input 
+              type="text" 
+              id="search-input" 
+              placeholder="친구 이름이나 역할명을 찾아보세요! (예: 민준, 칠판)" 
+              autocomplete="off"
+            >
           </div>
 
-          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-            <button id="btn-export-csv" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.88rem;" title="엑셀용 CSV 파일 다운로드">
-              📊 CSV 다운로드
+          <div class="tool-buttons-group">
+            <button id="btn-export-csv" class="btn-puffy" style="background: #f0fdf4; border-color: #bbf7d0; color: #166534; font-size: 13px; padding: 7px 12px;" title="엑셀용 CSV 파일 다운로드">
+              📊 엑셀 다운로드
             </button>
-            <div class="view-mode-buttons">
-              <button id="btn-view-card" class="view-btn active" title="카드 형태로 보기">🗂️ 카드 뷰</button>
-              <button id="btn-view-table" class="view-btn" title="표 형태로 보기">📋 표 뷰</button>
-            </div>
+            <button id="btn-view-card" class="btn-cute-toggle active" title="알록달록 스티커 카드 형태로 보기">
+              🗂️ 카드 뷰
+            </button>
+            <button id="btn-view-table" class="btn-cute-toggle" title="단정한 표 형태로 보기">
+              📋 표 뷰
+            </button>
           </div>
         </div>
       </section>
 
-      <!-- 역할 배정 결과 영역 -->
-      <section id="results-container" class="results-container">
+      <!-- =========================================================================
+           3. 역할 배정 결과 영역
+           ========================================================================= -->
+      <section id="results-container">
         
-        <!-- 배정 전 초기 안내 (Empty State) -->
-        <div id="empty-state" class="empty-state">
-          <div class="empty-icon">🎒</div>
+        <!-- 초기 빈 상태 (Empty State) -->
+        <div id="empty-state" class="kids-empty-state">
+          <div class="empty-mascot-box">🎒</div>
           <h3>우리 반 친구들의 1인 1역할을 정해볼까요?</h3>
           <p>
-            기본 예시 데이터(학생 20명, 알찬 교실 역할 20개)가 세팅되어 있습니다.<br>
-            위의 <strong>[🎲 역할 배정하기]</strong> 버튼을 누르면 공정하게 1:1 무작위 매칭됩니다!
+            우리 반 친구 20명과 신나고 재미있는 역할 20개가 준비되어 있어요!<br>
+            위의 <strong>[🎲 두근두근! 역할 뽑기 시작!]</strong> 버튼을 눌러보세요!
           </p>
-          <button class="btn btn-primary" onclick="assignRoles()">
-            <span class="btn-icon">🎲</span>
-            <span>지금 바로 배정 시작하기</span>
+          <button class="btn-big-roll" onclick="assignRoles()" style="margin: 0 auto;">
+            <span class="dice-icon">🎲</span>
+            <span>지금 바로 뽑기!</span>
           </button>
         </div>
 
-        <!-- 카드 그리드 뷰 (기본) -->
-        <div id="cards-grid" class="cards-grid" style="display: none;"></div>
+        <!-- 스티커 카드 그리드 (기본) -->
+        <div id="cards-grid" class="kids-cards-grid" style="display: none;"></div>
 
-        <!-- 표 뷰 (선택형) -->
-        <div id="table-view-container" class="table-view-container" style="display: none;"></div>
+        <!-- 단정한 표 뷰 -->
+        <div id="table-view-container" class="kids-table-wrap" style="display: none;"></div>
+
       </section>
     </main>
   </div>
 
   <!-- =========================================================================
-       2. 교실 게시판 부착용 A4 전용 인쇄 양식 (#print-section)
+       4. 교실 게시판 부착용 A4 전용 인쇄 양식 (#print-section)
        ========================================================================= -->
   <div id="print-section">
     <div class="print-header">
-      <h1 id="print-class-title">[ 3학년 2반 ] 우리 반 1인 1역할 배정표</h1>
+      <h1 id="print-class-title">[ 3학년 2반 ] 사이좋은 1인 1역할 배정표</h1>
       <div class="print-meta-row">
-        <span>🏫 초등학교</span>
+        <span>🏫 행복한 초등학교</span>
         <span id="print-date">배정일자: 2026년 3월 2일</span>
       </div>
     </div>
 
     <div class="print-motto">
-      🌱 <strong>우리들의 약속:</strong> 내가 맡은 역할에 긍지와 책임을 다하여 모두가 즐겁고 깨끗한 우리 교실을 만듭니다.
+      🌱 <strong>우리들의 다짐:</strong> 내가 맡은 소중한 역할을 정성껏 실천하여 서로를 돕는 다정한 우리 반을 만들어요!
     </div>
 
-    <!-- 20명을 좌/우 2열로 단정하게 분할하여 A4 1장에 완벽하게 들어맞도록 구성 -->
     <div class="print-table-container">
       <table class="print-table">
         <thead>
@@ -157,9 +170,7 @@
             <th class="col-check">확인</th>
           </tr>
         </thead>
-        <tbody id="print-table-body-1">
-          <!-- 스크립트에서 왼쪽 10명 행 생성 -->
-        </tbody>
+        <tbody id="print-table-body-1"></tbody>
       </table>
 
       <table class="print-table">
@@ -172,32 +183,30 @@
             <th class="col-check">확인</th>
           </tr>
         </thead>
-        <tbody id="print-table-body-2">
-          <!-- 스크립트에서 오른쪽 10명 행 생성 -->
-        </tbody>
+        <tbody id="print-table-body-2"></tbody>
       </table>
     </div>
 
     <div class="print-footer-sign">
       <span>※ 매일 하교 전 자신의 역할을 성실히 수행하고 확인란에 체크하세요.</span>
       <div class="sign-box">
-        <span>담임 교사 확인:</span>
+        <span>담임 선생님 확인:</span>
         <span style="display: inline-block; width: 60px; text-align: right;">(인)</span>
       </div>
     </div>
   </div>
 
   <!-- =========================================================================
-       3. 모달 레이어: 구글 스프레드시트(Apps Script) 연동 안내 및 설정
+       5. 모달: 구글 스프레드시트(Apps Script) 연동 안내 및 설정
        ========================================================================= -->
   <div id="sheets-modal" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3><span class="btn-icon">📊</span> 구글 스프레드시트(Apps Script) 연동</h3>
+        <h3><span>📊</span> 구글 스프레드시트(Apps Script) 연동</h3>
         <button class="modal-close-btn" onclick="closeSheetsModal()">✕</button>
       </div>
       <div class="modal-body">
-        <p style="color: #475569; margin-bottom: 14px;">
+        <p style="color: #4b5563; margin-bottom: 14px;">
           다음 단계에서 배포할 구글 Apps Script Web App URL을 등록하여<br>
           스프레드시트에서 학생 명단을 자동으로 불러오거나 배정 결과를 원클릭으로 기록할 수 있습니다.
         </p>
@@ -210,13 +219,12 @@
           </div>
         </div>
 
-        <details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
-          <summary style="font-weight: 700; cursor: pointer; color: #4338ca;">
+        <details style="background: #fefce8; border: 2px dashed #facc15; border-radius: 12px; padding: 12px; margin-bottom: 16px;">
+          <summary style="font-weight: 700; cursor: pointer; color: #854d0e;">
             📜 Apps Script 예시 코드 보기 (복사해서 붙여넣기용)
           </summary>
           <div class="code-snippet">function doGet(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("명단");
-  // 명단 시트에서 학생 및 역할 데이터를 JSON으로 반환
   var data = { students: [...], roles: [...] };
   return ContentService.createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
@@ -225,31 +233,30 @@
 function doPost(e) {
   var body = JSON.parse(e.postData.contents);
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("배정결과");
-  // 배정 결과 시트에 학생별 역할 기록
   return ContentService.createTextOutput(JSON.stringify({ status: "success" }))
     .setMimeType(ContentService.MimeType.JSON);
 }</div>
         </details>
 
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px; font-size: 0.9rem; color: #166534;">
-          💡 <strong>지금 바로 스프레드시트 없이도 사용 가능:</strong><br>
-          상단의 <strong>[📊 CSV 다운로드]</strong> 버튼을 누르면 즉시 엑셀 및 구글 시트에 바로 붙여넣을 수 있는 CSV 파일로 저장됩니다.
+        <div style="background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 12px; padding: 12px; font-size: 13px; color: #166534;">
+          💡 <strong>스프레드시트 없이 즉시 저장 가능:</strong><br>
+          상단의 <strong>[📊 엑셀 다운로드]</strong> 버튼을 누르면 즉시 엑셀 및 구글 시트에 바로 붙여넣을 수 있는 CSV 파일로 저장됩니다.
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeSheetsModal()">닫기</button>
-        <button class="btn btn-primary" onclick="saveSheetsUrl()">설정 저장</button>
+        <button class="btn-puffy" style="background: #f5f5f4; border-color: #d6d3d1; color: #57534e;" onclick="closeSheetsModal()">닫기</button>
+        <button class="btn-puffy" style="background: #fde047; border-color: #eab308; color: #854d0e;" onclick="saveSheetsUrl()">설정 저장</button>
       </div>
     </div>
   </div>
 
   <!-- =========================================================================
-       4. 모달 레이어: 명단 및 역할 관리 모달
+       6. 모달: 명단 및 역할 관리
        ========================================================================= -->
   <div id="manage-modal" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3><span class="btn-icon">⚙️</span> 학급 명단 및 역할 관리</h3>
+        <h3><span>⚙️</span> 우리 반 명단 및 역할 관리</h3>
         <button class="modal-close-btn" onclick="closeManageModal()">✕</button>
       </div>
       <div class="modal-body">
@@ -282,68 +289,61 @@ function doPost(e) {
         <div id="tab-roles-content" style="display: none;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <label style="font-weight: 700; margin: 0;">역할 목록 (아이콘 / 역할명 / 설명)</label>
-            <button type="button" class="btn btn-secondary" onclick="addNewRoleRow()" style="padding: 4px 10px; font-size: 0.85rem;">
+            <button type="button" class="btn-puffy" onclick="addNewRoleRow()" style="padding: 4px 10px; font-size: 13px; background: #fef08a; border-color: #facc15; color: #854d0e;">
               + 역할 추가
             </button>
           </div>
-          <div id="manage-roles-container" style="max-height: 280px; overflow-y: auto; padding-right: 6px;">
-            <!-- 스크립트에서 동적 생성 -->
-          </div>
+          <div id="manage-roles-container" style="max-height: 280px; overflow-y: auto; padding-right: 6px;"></div>
         </div>
       </div>
       <div class="modal-footer" style="justify-content: space-between;">
-        <button class="btn btn-secondary" onclick="resetToDefaultData()" style="color: #ef4444;">
-          🔄 기본값으로 복원
+        <button class="btn-puffy" onclick="resetToDefaultData()" style="background: #fee2e2; border-color: #fca5a5; color: #b91c1c;">
+          기본값 복원
         </button>
         <div style="display: flex; gap: 8px;">
-          <button class="btn btn-secondary" onclick="closeManageModal()">취소</button>
-          <button class="btn btn-primary" onclick="saveManageSettings()">저장 및 적용</button>
+          <button class="btn-puffy" style="background: #f5f5f4; border-color: #d6d3d1; color: #57534e;" onclick="closeManageModal()">취소</button>
+          <button class="btn-puffy" style="background: #fde047; border-color: #eab308; color: #854d0e;" onclick="saveManageSettings()">저장 및 적용</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- =========================================================================
-       5. 모달 레이어: 수동 개별 역할 변경 및 맞교환 모달
+       7. 모달: 역할 변경 및 맞교환
        ========================================================================= -->
   <div id="swap-modal" class="modal-overlay">
     <div class="modal-content" style="max-width: 480px;">
       <div class="modal-header">
-        <h3><span class="btn-icon">🔄</span> 역할 변경 및 맞교환</h3>
+        <h3><span>🔄</span> 역할 바꾸기 및 맞교환</h3>
         <button class="modal-close-btn" onclick="closeSwapModal()">✕</button>
       </div>
       <div class="modal-body">
-        <p id="swap-modal-student-info" style="font-weight: 700; color: #1e293b; margin-bottom: 16px;"></p>
+        <p id="swap-modal-student-info" style="font-weight: 700; color: #1e293b; margin-bottom: 16px; font-family: var(--font-display);"></p>
 
         <div class="form-group">
-          <label for="swap-partner-select">옵션 A: 다른 친구와 역할 맞교환하기</label>
-          <select id="swap-partner-select">
-            <!-- 자바스크립트에서 옵션 생성 -->
-          </select>
-          <div class="form-help">친구를 선택하면 두 학생의 역할이 서로 맞바뀝니다.</div>
+          <label for="swap-partner-select">방법 1: 다른 친구와 역할 맞바꾸기</label>
+          <select id="swap-partner-select"></select>
+          <div class="form-help">선택한 친구와 내 역할이 서로 교환됩니다.</div>
         </div>
 
-        <div style="text-align: center; margin: 12px 0; color: #94a3b8; font-weight: 700;">또는</div>
+        <div style="text-align: center; margin: 12px 0; color: #a8a29e; font-weight: 700;">또는</div>
 
         <div class="form-group">
-          <label for="swap-role-select">옵션 B: 단독으로 새로운 역할 직접 지정</label>
-          <select id="swap-role-select">
-            <!-- 자바스크립트에서 옵션 생성 -->
-          </select>
-          <div class="form-help">맞교환할 친구를 선택하지 않고 새 역할을 선택하면 이 학생만 역할이 바뀝니다.</div>
+          <label for="swap-role-select">방법 2: 새로운 역할 직접 지정하기</label>
+          <select id="swap-role-select"></select>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeSwapModal()">취소</button>
-        <button class="btn btn-primary" onclick="applySwapRole()">변경 적용</button>
+        <button class="btn-puffy" style="background: #f5f5f4; border-color: #d6d3d1; color: #57534e;" onclick="closeSwapModal()">취소</button>
+        <button class="btn-puffy" style="background: #fde047; border-color: #eab308; color: #854d0e;" onclick="applySwapRole()">바꾸기 완료</button>
       </div>
     </div>
   </div>
 
-  <!-- 토스트 안내 메시지 알림 -->
+  <!-- 토스트 안내 알림창 -->
   <div id="toast-notice" class="toast-notice" role="status" aria-live="polite"></div>
 
-  <!-- 동작 로직 스크립트 분리 연결 -->
+  <!-- 스크립트 연결 -->
   <script src="./script.js"></script>
 </body>
 </html>
