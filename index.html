@@ -2,12 +2,23 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>우리 반 1인 1역할 뽑기 대작전! 🎒🌈</title>
-  <meta name="description" content="초등 저학년 눈높이에 맞춘 아기자기하고 귀여운 학급 1인 1역할 무작위 배정 및 교실 게시판용 A4 인쇄 웹 애플리케이션">
-  <meta property="og:title" content="우리 반 1인 1역할 뽑기 대작전! 🎒🌈">
-  <meta property="og:description" content="초등 저학년 친구들을 위한 귀엽고 신나는 1인 1역할 배정 도우미">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>우리 반 1인 1역할 배정 시스템 🎒🌈</title>
+  <meta name="description" content="학생 1·2·3지망 희망 순위 반영 및 동점 시 교실 실제 가위바위보 연동 학급 1인 1역할 공정 배정 시스템">
+  <meta property="og:title" content="우리 반 1인 1역할 배정 시스템 🎒🌈">
+  <meta property="og:description" content="초등학생을 위한 희망 순위 기반 공정 1인 1역할 배정 웹 애플리케이션">
   <meta property="og:type" content="website">
+
+  <!-- PWA & 모바일 웹앱 설정 -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#fbbf24">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="1인 1역할">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
 
   <!-- 스타일시트 분리 연결 -->
   <link rel="stylesheet" href="./style.css">
@@ -26,15 +37,23 @@
       <div class="brand-group">
         <div class="brand-icon-bubble" aria-hidden="true">🎒</div>
         <div class="brand-text">
-          <h1>우리 반 1인 1역할 뽑기 대작전! 🌈</h1>
+          <h1>우리 반 1인 1역할 배정 시스템 🌈</h1>
           <button id="class-title-badge" class="class-sticker-btn" onclick="openManageModal()" title="학급 및 학기 정보 변경">
-            <span>🏫</span> <span id="class-badge-text">3학년 2반 · 2026학년도 1학기</span> <span>✏️</span>
+            <span>🏫</span> <span id="class-badge-text">우리 반 · 2026학년도 2학기</span> <span>✏️</span>
           </button>
         </div>
       </div>
 
-      <!-- 상단 액션 버튼 그룹 (구글 시트 연동, A4 인쇄, 명단 관리) -->
+      <!-- 상단 액션 버튼 그룹 (희망 조사, 시트 연동, A4 인쇄, 명단 관리) -->
       <div class="header-action-group">
+        <button id="btn-install-app" class="btn-puffy" style="background: #fdf2f8; border-color: #f472b6; color: #db2777;" onclick="openPWAInstallModal()" title="스마트폰, 태블릿, PC 홈 화면에 바로 실행되는 앱으로 설치합니다.">
+          <span>📲</span>
+          <span id="btn-install-text">앱 설치하기</span>
+        </button>
+        <button id="btn-open-wishes" class="btn-puffy btn-puffy-wishes" title="학생 24명의 1·2·3지망 희망 역할을 조사하고 수정합니다.">
+          <span>📝</span>
+          <span>1·2·3지망 희망 조사</span>
+        </button>
         <button id="btn-sheet-load" class="btn-puffy btn-puffy-sheet-load" title="구글 스프레드시트에서 명단 불러오기">
           <span>🔄</span>
           <span>시트 불러오기</span>
@@ -47,9 +66,9 @@
           <span>🖨️</span>
           <span>A4 인쇄 / PDF</span>
         </button>
-        <button id="btn-manage" class="btn-puffy btn-puffy-manage" title="학생 이름 및 역할 목록 직접 편집">
+        <button id="btn-manage" class="btn-puffy btn-puffy-manage" title="학생 이름, 역할 목록 및 정원(capacity) 직접 편집">
           <span>⚙️</span>
-          <span>명단·역할 관리</span>
+          <span>명단·정원 관리</span>
         </button>
       </div>
     </header>
@@ -64,25 +83,25 @@
           <!-- 상태 뱃지 -->
           <div class="cute-stat-chips">
             <span class="stat-chip">
-              <span>👧</span> 총 학생: <strong id="stat-student-count">20명</strong>
+              <span>👧</span> 우리 반: <strong id="stat-student-count">24명</strong>
             </span>
             <span class="stat-chip">
-              <span>⭐</span> 준비된 역할: <strong id="stat-role-count">20개</strong>
+              <span>⭐</span> 준비된 역할: <strong id="stat-role-count">24개</strong>
             </span>
             <span class="stat-chip">
               <span>🎉</span> 배정 완료: <strong id="stat-assigned-count">0명</strong>
             </span>
           </div>
 
-          <!-- 메인 큰 버튼 (두근두근 역할 뽑기 시작!) -->
+          <!-- 메인 큰 버튼 (AI 희망 순위 배정 시작!) -->
           <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <button id="btn-shuffle" class="btn-big-roll">
               <span class="dice-icon">🎲</span>
-              <span>두근두근! 역할 뽑기 시작! ✨</span>
+              <span>AI 희망 역할 배정 시작! ✨</span>
             </button>
             <button id="btn-reset" class="btn-puffy" style="background: #f5f5f4; border-color: #d6d3d1; color: #78716c;" title="배정 결과 초기화">
               <span>↩️</span>
-              <span>다시 뽑기</span>
+              <span>다시 배정</span>
             </button>
           </div>
 
@@ -95,12 +114,15 @@
             <input 
               type="text" 
               id="search-input" 
-              placeholder="친구 이름이나 역할명을 찾아보세요! (예: 민준, 칠판)" 
+              placeholder="친구 이름(예: 강다은, 최지훈)이나 역할명을 찾아보세요!" 
               autocomplete="off"
             >
           </div>
 
           <div class="tool-buttons-group">
+            <button class="btn-puffy btn-puffy-wishes" onclick="openWishesModal()" style="font-size: 13px; padding: 7px 12px;">
+              📝 희망 순위 보기
+            </button>
             <button id="btn-export-csv" class="btn-puffy" style="background: #f0fdf4; border-color: #bbf7d0; color: #166534; font-size: 13px; padding: 7px 12px;" title="엑셀용 CSV 파일 다운로드">
               📊 엑셀 다운로드
             </button>
@@ -122,15 +144,21 @@
         <!-- 초기 빈 상태 (Empty State) -->
         <div id="empty-state" class="kids-empty-state">
           <div class="empty-mascot-box">🎒</div>
-          <h3>우리 반 친구들의 1인 1역할을 정해볼까요?</h3>
+          <h3>우리 반 24명의 희망 순위를 반영하여 배정해 볼까요?</h3>
           <p>
-            우리 반 친구 20명과 신나고 재미있는 역할 20개가 준비되어 있어요!<br>
-            위의 <strong>[🎲 두근두근! 역할 뽑기 시작!]</strong> 버튼을 눌러보세요!
+            학생들의 <strong>1지망</strong>을 먼저 고려하고, 자리가 차면 <strong>2지망, 3지망</strong>을 차례로 검토합니다.<br>
+            동일한 역할에 동점자가 발생하면 <strong>AI가 임의로 뽑지 않고 즉시 멈추어 교실에서 직접 가위바위보</strong>를 할 수 있도록 안내합니다!
           </p>
-          <button class="btn-big-roll" onclick="assignRoles()" style="margin: 0 auto;">
-            <span class="dice-icon">🎲</span>
-            <span>지금 바로 뽑기!</span>
-          </button>
+          <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <button class="btn-big-roll" onclick="startAIAssignment()">
+              <span class="dice-icon">🎲</span>
+              <span>AI 희망 역할 배정 시작하기</span>
+            </button>
+            <button class="btn-puffy btn-puffy-wishes" onclick="openWishesModal()" style="font-size: 15px; padding: 11px 18px;">
+              <span>📝</span>
+              <span>1·2·3지망 희망 조사표 열기</span>
+            </button>
+          </div>
         </div>
 
         <!-- 스티커 카드 그리드 (기본) -->
@@ -144,14 +172,215 @@
   </div>
 
   <!-- =========================================================================
-       4. 교실 게시판 부착용 A4 전용 인쇄 양식 (#print-section)
+       4. [핵심 기능] 동점 발생 시 실제 교실 가위바위보 일시정지 모달 (#rps-pause-modal)
+       ========================================================================= -->
+  <div id="rps-pause-modal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header" style="background: #fff7ed; border-bottom: 2px dashed #f97316;">
+        <h3 style="color: #c2410c;"><span>✋✌️✊</span> 가위바위보가 필요합니다!</h3>
+        <!-- 동점 해결 전에는 닫을 수 없도록 X버튼 대신 안내 문구 -->
+      </div>
+      <div class="modal-body">
+        
+        <div class="rps-alert-card">
+          <div class="rps-badge-header">경쟁 발생 &middot; 배정 일시정지</div>
+          <div class="rps-role-title-callout" id="rps-pause-role-name">
+            💻 컴퓨터·TV 도우미
+          </div>
+          <div style="font-size: 14px; color: #78350f; font-weight: 700;">
+            선발 필요 인원: <span id="rps-pause-needed-count" style="color: #ea580c; font-size: 17px;">1명</span>
+          </div>
+
+          <div class="rps-instruction-banner">
+            📢 <strong>선생님 안내:</strong><br>
+            아래 후보 친구들이 <strong>교실에서 직접 가위바위보</strong>를 진행해 주세요!<br>
+            가위바위보에서 승리한 학생을 아래에서 터치하여 선택한 후 [결과 확정]을 눌러주세요.
+          </div>
+        </div>
+
+        <div style="margin-bottom: 6px; font-weight: 700; color: #475569; display: flex; justify-content: space-between;">
+          <span>동점 후보 학생 목록:</span>
+          <span>선택된 승자: <strong id="rps-pause-selected-count" style="color: #16a34a;">0명</strong> / <span id="rps-pause-target-count">1명</span></span>
+        </div>
+
+        <!-- 경쟁 학생 리스트 -->
+        <div id="rps-pause-competitors-list" class="rps-competitors-list"></div>
+
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <span style="font-size: 12px; color: #94a3b8; align-self: center;">
+          ※ 가위바위보 승자 확정 후 나머지 학생은 2·3지망으로 자동 배정됩니다.
+        </span>
+        <button class="btn-puffy" style="background: #22c55e; border-color: #16a34a; color: #ffffff; font-size: 15px; padding: 10px 20px;" onclick="confirmRPSWinnersAndResume()">
+          <span>🏆</span>
+          <span>결과 확정 및 배정 계속하기</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       5. [역할 우선 & 123번 학생 번호] 학급 희망 역할 조사/입력 모달 (#wishes-modal)
+       ========================================================================= -->
+  <div id="wishes-modal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 960px; width: 95%;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 26px;">📝</span>
+          <div>
+            <h3 style="margin: 0; font-size: 20px;">학급 1인 1역할 희망 조사표</h3>
+            <span style="font-size: 13px; color: #78716c; font-weight: normal;">
+              역할이 맨 앞에 나오고, 학생 이름이 1, 2, 3번 순서로 또박또박 정리됩니다.
+            </span>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeWishesModal()">✕</button>
+      </div>
+      
+      <div class="modal-body" style="padding: 16px 20px;">
+        <!-- 상단 뷰 전환 탭: 1. 역할 중심 (역할이 앞에 나옴) / 2. 학생 번호순 (1번~24번) -->
+        <div class="wishes-view-tabs">
+          <button id="tab-wishes-role-btn" class="wishes-view-tab-btn active" onclick="switchWishesTab('role')">
+            <span>🏷️ 역할별 희망 조사 (역할이 앞에 나옴 · 정원 및 가위바위보 경쟁 현황)</span>
+          </button>
+          <button id="tab-wishes-student-btn" class="wishes-view-tab-btn" onclick="switchWishesTab('student')">
+            <span>👧 학생 번호순 희망 조사 (1번~24번 학생별 1·2·3지망)</span>
+          </button>
+        </div>
+
+        <!-- 안내 배너 -->
+        <div id="wishes-banner-role" class="wishes-info-alert">
+          💡 <strong>역할이 먼저 나오는 희망 조사표:</strong> 역할별 정원과 각 역할에 지원한 학생들을 <strong>1번~24번 순서</strong>로 한눈에 파악합니다. 정원보다 1지망 지원자가 많으면 <span class="badge-status-hot" style="display: inline-block; padding: 2px 8px; font-size: 11.5px;">🔥 가위바위보 필요</span>로 자동 표시됩니다.
+        </div>
+        <div id="wishes-banner-student" class="wishes-info-alert" style="display: none; background: #f0fdf4; border-color: #86efac; color: #166534;">
+          👧 <strong>학생 번호순 희망 조사:</strong> 1번부터 24번까지 학생별로 1·2·3지망 역할을 한눈에 확인하고 드롭다운으로 변경합니다.
+        </div>
+
+        <!-- 탭 1: 역할 중심 희망 조사표 (역할이 맨 앞) -->
+        <div id="wishes-role-view-container" class="wishes-table-container">
+          <table class="wishes-table role-first-table">
+            <thead>
+              <tr>
+                <th style="width: 220px; text-align: left;">역할명 &amp; 모집 정원</th>
+                <th style="width: 230px; text-align: left;">1지망 지원 학생 (123번)</th>
+                <th style="width: 180px; text-align: left;">2지망 지원 학생 (123번)</th>
+                <th style="width: 170px; text-align: left;">3지망 지원 학생 (123번)</th>
+                <th style="width: 130px; text-align: center;">경쟁 현황</th>
+              </tr>
+            </thead>
+            <tbody id="wishes-role-tbody">
+              <!-- JS에서 24개 역할 및 지원 학생 렌더링 -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 탭 2: 학생 번호순 희망 조사표 (1번~24번 학생별) -->
+        <div id="wishes-student-view-container" class="wishes-table-container" style="display: none;">
+          <table class="wishes-table student-numbered-table">
+            <thead>
+              <tr>
+                <th style="width: 120px; text-align: center;">학생 (123번)</th>
+                <th style="width: 180px;">1지망 역할</th>
+                <th style="width: 180px;">2지망 역할</th>
+                <th style="width: 180px;">3지망 역할</th>
+                <th style="width: 160px;">지난 학기 역할</th>
+              </tr>
+            </thead>
+            <tbody id="wishes-student-tbody">
+              <!-- JS에서 1번~24번 학생 렌더링 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="btn-puffy" style="background: #fee2e2; border-color: #fca5a5; color: #b91c1c; font-size: 13px;" onclick="clearAllWishes()" title="모든 학생의 1·2·3지망을 깨끗하게 지웁니다.">
+            🧹 희망 전체 비우기
+          </button>
+          <button class="btn-puffy" style="background: #fef08a; border-color: #facc15; color: #854d0e; font-size: 13px;" onclick="fillRandomWishes()" title="테스트용 추천 데이터 자동 채우기">
+            🎲 추천 희망 데이터 자동 채우기
+          </button>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-puffy" style="background: #f5f5f4; border-color: #d6d3d1; color: #57534e;" onclick="closeWishesModal()">닫기</button>
+          <button class="btn-puffy" style="background: #fde047; border-color: #eab308; color: #854d0e;" onclick="saveWishesSettings()">저장 및 적용</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 학생 개인 희망 역할 빠른 수정 팝업 (#student-wish-modal) -->
+  <div id="student-wish-modal" class="modal-overlay" style="z-index: 1050;">
+    <div class="modal-content" style="max-width: 440px;">
+      <div class="modal-header" style="background: #fef3c7; border-bottom: 2px dashed #f59e0b;">
+        <h3 id="student-wish-editor-title" style="color: #92400e; font-size: 17px;">
+          <span>✏️</span> 학생 희망 역할 수정
+        </h3>
+        <button class="modal-close-btn" onclick="closeStudentWishEditor()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="edit-wish-student-id">
+        <div class="form-group">
+          <label for="edit-wish-1">🥇 1지망 역할</label>
+          <select id="edit-wish-1" class="form-control"></select>
+        </div>
+        <div class="form-group">
+          <label for="edit-wish-2">🥈 2지망 역할</label>
+          <select id="edit-wish-2" class="form-control"></select>
+        </div>
+        <div class="form-group">
+          <label for="edit-wish-3">🥉 3지망 역할</label>
+          <select id="edit-wish-3" class="form-control"></select>
+        </div>
+        <div class="form-group">
+          <label for="edit-past-role">🕰️ 지난 학기 역할</label>
+          <select id="edit-past-role" class="form-control">
+            <option value="0">-- 없음 / 신규 --</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-puffy" style="background: #f5f5f4; border-color: #d6d3d1; color: #57534e;" onclick="closeStudentWishEditor()">취소</button>
+        <button class="btn-puffy" style="background: #fde047; border-color: #eab308; color: #854d0e;" onclick="applyStudentWishEdit()">수정 완료</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 역할별 지원 학생 간편 추가 팝업 (#add-applicant-modal) -->
+  <div id="add-applicant-modal" class="modal-overlay" style="z-index: 1050;">
+    <div class="modal-content" style="max-width: 420px;">
+      <div class="modal-header" style="background: #e0f2fe; border-bottom: 2px dashed #38bdf8;">
+        <h3 id="add-applicant-title" style="color: #0369a1; font-size: 17px;">
+          <span>➕</span> 지원 학생 추가
+        </h3>
+        <button class="modal-close-btn" onclick="closeAddApplicantModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="add-applicant-role-id">
+        <input type="hidden" id="add-applicant-rank">
+        <p id="add-applicant-desc" style="font-size: 13.5px; color: #475569; margin-bottom: 12px;"></p>
+        <div class="form-group">
+          <label for="add-applicant-student-select">추가할 학생 선택 (1번~24번 순)</label>
+          <select id="add-applicant-student-select" class="form-control"></select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-puffy" style="background: #f5f5f4; border-color: #d6d3d1; color: #57534e;" onclick="closeAddApplicantModal()">취소</button>
+        <button class="btn-puffy" style="background: #38bdf8; border-color: #0284c7; color: #ffffff;" onclick="confirmAddApplicant()">추가하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       6. 교실 게시판 부착용 A4 전용 인쇄 양식 (24명 2열 12행 완벽 레이아웃)
        ========================================================================= -->
   <div id="print-section">
     <div class="print-header">
-      <h1 id="print-class-title">[ 3학년 2반 ] 사이좋은 1인 1역할 배정표</h1>
+      <h1 id="print-class-title">[ 우리 반 ] 사이좋은 1인 1역할 배정표 (2026학년도 2학기)</h1>
       <div class="print-meta-row">
-        <span>🏫 행복한 초등학교</span>
-        <span id="print-date">배정일자: 2026년 3월 2일</span>
+        <span>🏫 초등학교</span>
+        <span id="print-date">배정일자: 2026년 9월 1일</span>
       </div>
     </div>
 
@@ -166,6 +395,7 @@
             <th class="col-num">번호</th>
             <th class="col-name">이름</th>
             <th class="col-role">역할명</th>
+            <th class="col-wish">희망</th>
             <th class="col-desc">담당 임무</th>
             <th class="col-check">확인</th>
           </tr>
@@ -179,6 +409,7 @@
             <th class="col-num">번호</th>
             <th class="col-name">이름</th>
             <th class="col-role">역할명</th>
+            <th class="col-wish">희망</th>
             <th class="col-desc">담당 임무</th>
             <th class="col-check">확인</th>
           </tr>
@@ -197,7 +428,7 @@
   </div>
 
   <!-- =========================================================================
-       5. 모달: 구글 스프레드시트(Apps Script) 연동 안내 및 설정
+       7. 모달: 구글 스프레드시트(Apps Script) 연동 안내 및 설정
        ========================================================================= -->
   <div id="sheets-modal" class="modal-overlay">
     <div class="modal-content">
@@ -251,12 +482,12 @@ function doPost(e) {
   </div>
 
   <!-- =========================================================================
-       6. 모달: 명단 및 역할 관리
+       8. 모달: 명단 및 역할·정원 관리
        ========================================================================= -->
   <div id="manage-modal" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3><span>⚙️</span> 우리 반 명단 및 역할 관리</h3>
+        <h3><span>⚙️</span> 우리 반 명단 및 역할·정원 관리</h3>
         <button class="modal-close-btn" onclick="closeManageModal()">✕</button>
       </div>
       <div class="modal-body">
@@ -267,28 +498,28 @@ function doPost(e) {
           </div>
           <div class="form-group" style="margin-bottom: 0;">
             <label for="manage-term-name">학기 / 분기</label>
-            <input type="text" id="manage-term-name" placeholder="예: 2026학년도 1학기">
+            <input type="text" id="manage-term-name" placeholder="예: 2026학년도 2학기">
           </div>
         </div>
 
         <div class="modal-tabs">
           <button id="tab-students-btn" class="modal-tab-btn active">학생 명단 편집 (줄 단위)</button>
-          <button id="tab-roles-btn" class="modal-tab-btn">역할 목록 편집</button>
+          <button id="tab-roles-btn" class="modal-tab-btn">역할 목록 & 정원(모집인원) 편집</button>
         </div>
 
         <!-- 탭 1: 학생 명단 -->
         <div id="tab-students-content">
           <div class="form-group">
             <label for="manage-students-textarea">학생 이름 목록 (한 줄에 1명씩 입력)</label>
-            <textarea id="manage-students-textarea" rows="10" placeholder="김민준&#10;이서아&#10;박도윤..."></textarea>
+            <textarea id="manage-students-textarea" rows="10" placeholder="강다은&#10;김민서&#10;김혜린..."></textarea>
             <div class="form-help">입력된 순서대로 1번부터 번호가 자동으로 부여됩니다.</div>
           </div>
         </div>
 
-        <!-- 탭 2: 역할 목록 -->
+        <!-- 탭 2: 역할 목록 & 정원 -->
         <div id="tab-roles-content" style="display: none;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <label style="font-weight: 700; margin: 0;">역할 목록 (아이콘 / 역할명 / 설명)</label>
+            <label style="font-weight: 700; margin: 0;">역할 목록 (아이콘 / 역할명 / 모집 정원 / 설명)</label>
             <button type="button" class="btn-puffy" onclick="addNewRoleRow()" style="padding: 4px 10px; font-size: 13px; background: #fef08a; border-color: #facc15; color: #854d0e;">
               + 역할 추가
             </button>
@@ -309,7 +540,7 @@ function doPost(e) {
   </div>
 
   <!-- =========================================================================
-       7. 모달: 역할 변경 및 맞교환
+       9. 모달: 개별 역할 맞바꾸기
        ========================================================================= -->
   <div id="swap-modal" class="modal-overlay">
     <div class="modal-content" style="max-width: 480px;">
@@ -338,6 +569,48 @@ function doPost(e) {
         <button class="btn-puffy" style="background: #fde047; border-color: #eab308; color: #854d0e;" onclick="applySwapRole()">바꾸기 완료</button>
       </div>
     </div>
+  </div>
+
+  <!-- =========================================================================
+       10. PWA 앱 설치 안내 모달 (#pwa-install-modal)
+       ========================================================================= -->
+  <div id="pwa-install-modal" class="modal-overlay" style="z-index: 1100;">
+    <div class="modal-content" style="max-width: 440px;">
+      <div class="modal-header" style="background: #fdf2f8; border-bottom: 2px dashed #f472b6;">
+        <h3 style="color: #9d174d; font-size: 18px;">
+          <span>📲</span> 홈 화면에 앱 설치하기
+        </h3>
+        <button class="modal-close-btn" onclick="closePWAInstallModal()">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 18px 20px;">
+        <div style="text-align: center; margin-bottom: 14px;">
+          <img src="./icon.svg" alt="앱 아이콘" style="width: 72px; height: 72px; border-radius: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.12); margin: 0 auto; display: block;">
+          <h4 style="margin: 8px 0 2px 0; font-family: var(--font-display); font-size: 16px; color: #1e293b;">우리 반 1인 1역할 배정 시스템</h4>
+          <p style="font-size: 12.5px; color: #64748b; margin: 0;">인터넷이 없어도 교실에서 바로 켜지는 전용 독립 앱</p>
+        </div>
+
+        <div id="pwa-guide-android" style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 12px; font-size: 13px; color: #166534; line-height: 1.5; margin-bottom: 10px;">
+          <strong>📱 크롬 / 안드로이드 / PC / 맥:</strong><br>
+          아래 <strong>[지금 바로 앱 설치]</strong> 버튼을 누르면 스마트폰 홈 화면이나 컴퓨터 바탕화면에 전용 앱으로 설치됩니다.
+        </div>
+
+        <div id="pwa-guide-ios" style="background: #fffbeb; border: 1.5px solid #fde047; border-radius: 12px; padding: 12px; font-size: 13px; color: #92400e; line-height: 1.5;">
+          <strong>🍎 아이폰 / 아이패드 (Safari):</strong><br>
+          1. Safari 브라우저 하단의 <strong>[공유] (네모 위 화살표 ⬆️)</strong>를 터치하세요.<br>
+          2. 메뉴를 아래로 스크롤하여 <strong>[홈 화면에 추가] ➕</strong>를 누르세요.<br>
+          3. 홈 화면에 귀여운 책가방 아이콘 앱이 바로 생성됩니다!
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content: flex-end; gap: 8px;">
+        <button class="btn-puffy" style="background: #f5f5f4; border-color: #d6d3d1; color: #57534e;" onclick="closePWAInstallModal()">닫기</button>
+        <button id="btn-pwa-trigger-install" class="btn-puffy" style="background: #ec4899; border-color: #db2777; color: #ffffff;" onclick="triggerPWAInstall()">지금 바로 앱 설치</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 오프라인 모드 안내 배너 -->
+  <div id="offline-badge" style="display: none; position: fixed; bottom: 16px; left: 16px; background: #f59e0b; color: #ffffff; padding: 6px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700; font-family: var(--font-display); box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 9999;">
+    📡 오프라인 모드 — 교실에서 인터넷 없이 안전하게 사용 중입니다.
   </div>
 
   <!-- 토스트 안내 알림창 -->

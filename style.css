@@ -1,48 +1,47 @@
 /* ==========================================================================
    우리 반 1인 1역할 배정 시스템 - style.css
-   테마: 초등 저학년을 위한 아기자기하고 귀여운 알록달록 스티커 교실
+   테마: 초등학생 눈높이에 맞춘 아기자기하고 따뜻한 스티커 교실
+   폰트: 동글동글하면서도 또박또박한 'Jua' & 'Gowun Dodum'
+   기능: 1·2·3지망 희망 역할 선택 & 동점 시 교실 실제 가위바위보 연동 모달
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  /* 귀엽고 포근한 파스텔 레인보우 팔레트 */
-  --bg-cream: #fdfbf7;
+  /* 따뜻하고 사랑스러운 파스텔 테마 */
+  --bg-main: #fdfbf7;
   --bg-card: #ffffff;
-  
+
   --color-yellow: #fde047;
-  --color-yellow-dark: #eab308;
-  --color-yellow-shadow: #ca8a04;
+  --color-yellow-dark: #ca8a04;
   --color-yellow-light: #fef9c3;
 
   --color-pink: #f472b6;
   --color-pink-dark: #db2777;
-  --color-pink-shadow: #be185d;
   --color-pink-light: #fdf2f8;
 
   --color-mint: #34d399;
   --color-mint-dark: #059669;
-  --color-mint-shadow: #047857;
   --color-mint-light: #ecfdf5;
 
   --color-sky: #38bdf8;
   --color-sky-dark: #0284c7;
-  --color-sky-shadow: #0369a1;
   --color-sky-light: #f0f9ff;
 
   --color-purple: #c084fc;
   --color-purple-dark: #9333ea;
-  --color-purple-shadow: #7e22ce;
   --color-purple-light: #faf5ff;
 
   --color-orange: #fb923c;
   --color-orange-dark: #ea580c;
-  --color-orange-shadow: #c2410c;
   --color-orange-light: #fff7ed;
 
   --text-main: #332924;
   --text-sub: #6b5e57;
   --text-light: #9c8e85;
+
+  --border-soft: #fed7aa;
+  --border-card: #e5e7eb;
 
   --font-display: 'Jua', 'Gowun Dodum', sans-serif;
   --font-body: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
@@ -57,10 +56,10 @@
 
 body {
   font-family: var(--font-body);
-  background-color: var(--bg-cream);
+  background-color: var(--bg-main);
   background-image: 
     radial-gradient(#fbcfe8 2px, transparent 2px),
-    radial-gradient(#bae6fd 2px, var(--bg-cream) 2px);
+    radial-gradient(#bae6fd 2px, var(--bg-main) 2px);
   background-size: 32px 32px;
   background-position: 0 0, 16px 16px;
   color: var(--text-main);
@@ -71,7 +70,7 @@ body {
   overflow-x: hidden;
 }
 
-/* 폭죽 파티클 캔버스 */
+/* 축하 꽃가루 캔버스 */
 #confetti-canvas {
   position: fixed;
   top: 0;
@@ -82,23 +81,22 @@ body {
   z-index: 9999;
 }
 
-/* 전체 컨테이너 */
 .app-wrapper {
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 20px 16px 60px;
 }
 
 /* ==========================================================================
-   상단 귀여운 알림판 헤더
+   상단 헤더
    ========================================================================== */
 .cute-header {
   background: #ffffff;
   border: 3px solid #ffd6e0;
-  border-radius: 28px;
-  padding: 18px 26px;
-  margin-bottom: 22px;
-  box-shadow: 0 8px 0 #fed7aa, 0 12px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 26px;
+  padding: 18px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 0 #fed7aa, 0 12px 20px rgba(0, 0, 0, 0.04);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -107,13 +105,12 @@ body {
   position: relative;
 }
 
-/* 무지개 장식 선 */
 .cute-header::after {
   content: '';
   position: absolute;
   top: -3px;
-  left: 30px;
-  right: 30px;
+  left: 24px;
+  right: 24px;
   height: 6px;
   background: linear-gradient(90deg, #f472b6, #fb923c, #facc15, #4ade80, #38bdf8, #c084fc);
   border-radius: 4px;
@@ -122,20 +119,20 @@ body {
 .brand-group {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 
 .brand-icon-bubble {
-  width: 58px;
-  height: 58px;
+  width: 56px;
+  height: 56px;
   background: #fef08a;
   border: 3px solid #facc15;
-  border-radius: 20px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
-  box-shadow: 0 4px 0 #eab308;
+  font-size: 30px;
+  box-shadow: 0 4px 0 #ca8a04;
   animation: wiggle 3s ease-in-out infinite;
 }
 
@@ -147,7 +144,7 @@ body {
 
 .brand-text h1 {
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: 25px;
   color: #4a2818;
   letter-spacing: -0.5px;
   display: flex;
@@ -176,18 +173,17 @@ body {
   transform: scale(1.04);
 }
 
-/* 헤더 상단 액션 버튼 그룹 (도톰한 3D 스티커 버튼) */
 .header-action-group {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 /* 통통한 입체 푸시 버튼 */
 .btn-puffy {
   font-family: var(--font-display);
-  font-size: 15px;
-  padding: 9px 15px;
+  font-size: 14px;
+  padding: 8px 14px;
   border-radius: 14px;
   border: 2px solid;
   cursor: pointer;
@@ -203,15 +199,22 @@ body {
   box-shadow: none !important;
 }
 
+.btn-puffy-wishes {
+  background: #fef08a;
+  color: #854d0e;
+  border-color: #facc15;
+  box-shadow: 0 3px 0 #ca8a04;
+  font-weight: 700;
+}
+.btn-puffy-wishes:hover { background: #fde047; }
+
 .btn-puffy-sheet-load {
   background: #dcfce7;
   color: #15803d;
   border-color: #86efac;
   box-shadow: 0 3px 0 #4ade80;
 }
-.btn-puffy-sheet-load:hover {
-  background: #bbf7d0;
-}
+.btn-puffy-sheet-load:hover { background: #bbf7d0; }
 
 .btn-puffy-sheet-save {
   background: #e0f2fe;
@@ -219,9 +222,7 @@ body {
   border-color: #7dd3fc;
   box-shadow: 0 3px 0 #38bdf8;
 }
-.btn-puffy-sheet-save:hover {
-  background: #bae6fd;
-}
+.btn-puffy-sheet-save:hover { background: #bae6fd; }
 
 .btn-puffy-print {
   background: #ffedd5;
@@ -229,9 +230,7 @@ body {
   border-color: #fdba74;
   box-shadow: 0 3px 0 #fb923c;
 }
-.btn-puffy-print:hover {
-  background: #fed7aa;
-}
+.btn-puffy-print:hover { background: #fed7aa; }
 
 .btn-puffy-manage {
   background: #f3e8ff;
@@ -239,9 +238,7 @@ body {
   border-color: #d8b4fe;
   box-shadow: 0 3px 0 #c084fc;
 }
-.btn-puffy-manage:hover {
-  background: #e9d5ff;
-}
+.btn-puffy-manage:hover { background: #e9d5ff; }
 
 /* ==========================================================================
    메인 대시보드 알림판
@@ -249,11 +246,10 @@ body {
 .bulletin-board {
   background: #ffffff;
   border: 3px solid #fed7aa;
-  border-radius: 28px;
-  padding: 24px;
+  border-radius: 26px;
+  padding: 22px;
   box-shadow: 0 8px 0 #fcd34d, 0 14px 24px rgba(0, 0, 0, 0.05);
-  margin-bottom: 24px;
-  position: relative;
+  margin-bottom: 22px;
 }
 
 .board-top-row {
@@ -262,10 +258,9 @@ body {
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
-/* 귀여운 캐릭터 뱃지 */
 .cute-stat-chips {
   display: flex;
   gap: 8px;
@@ -276,8 +271,8 @@ body {
   background: #fffbeb;
   border: 2px solid #fef08a;
   border-radius: 16px;
-  padding: 6px 14px;
-  font-size: 14px;
+  padding: 6px 13px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #854d0e;
   display: inline-flex;
@@ -287,33 +282,30 @@ body {
 
 .stat-chip strong {
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 16px;
   color: #d97706;
 }
 
-/* 메인 대형 셔플 버튼 (두근두근 뽑기 버튼) */
+/* AI 희망 순위 배정 시작 버튼 */
 .btn-big-roll {
   font-family: var(--font-display);
-  font-size: 19px;
+  font-size: 18px;
   background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%);
   color: #ffffff;
   border: 3px solid #e11d48;
   border-radius: 20px;
-  padding: 13px 26px;
+  padding: 12px 24px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 10px;
   box-shadow: 0 6px 0 #9f1239, 0 10px 20px rgba(244, 63, 94, 0.35);
   transition: all 0.15s ease;
-  position: relative;
-  overflow: hidden;
 }
 
 .btn-big-roll:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 0 #9f1239, 0 14px 26px rgba(244, 63, 94, 0.45);
-  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
 }
 
 .btn-big-roll:active {
@@ -322,7 +314,7 @@ body {
 }
 
 .dice-icon {
-  font-size: 24px;
+  font-size: 22px;
   display: inline-block;
   animation: diceRoll 2s infinite ease-in-out;
 }
@@ -332,14 +324,14 @@ body {
   50% { transform: rotate(18deg) scale(1.15); }
 }
 
-/* 필터 및 검색 툴바 */
+/* 툴바 */
 .board-tool-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  padding-top: 18px;
+  padding-top: 16px;
   border-top: 2px dashed #fed7aa;
 }
 
@@ -353,8 +345,8 @@ body {
 .cute-search-box input {
   width: 100%;
   font-family: var(--font-body);
-  font-size: 15px;
-  padding: 10px 14px 10px 40px;
+  font-size: 14px;
+  padding: 9px 14px 9px 38px;
   border: 2px solid #ffd8a8;
   border-radius: 16px;
   background: #fffaf0;
@@ -374,7 +366,7 @@ body {
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 18px;
+  font-size: 16px;
   pointer-events: none;
 }
 
@@ -387,8 +379,8 @@ body {
 
 .btn-cute-toggle {
   font-family: var(--font-display);
-  font-size: 14px;
-  padding: 7px 14px;
+  font-size: 13px;
+  padding: 7px 13px;
   background: #f5f5f4;
   border: 2px solid #e7e5e4;
   border-radius: 12px;
@@ -405,67 +397,64 @@ body {
 }
 
 /* ==========================================================================
-   역할 배정 결과 (알록달록 스티커 책상 카드 뷰)
+   역할 배정 결과 (알록달록 스티커 책상 카드 뷰 & 지망 순위 뱃지)
    ========================================================================== */
 .kids-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+  gap: 16px;
   margin-top: 8px;
 }
 
 .desk-card {
   background: #ffffff;
-  border-radius: 22px;
-  padding: 18px 20px;
+  border-radius: 20px;
+  padding: 16px 18px;
   border: 3px solid;
-  box-shadow: 0 6px 0, 0 10px 16px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 5px 0, 0 8px 14px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
-  overflow: hidden;
 }
 
 .desk-card:hover {
   transform: translateY(-4px) scale(1.01);
 }
 
-/* 알록달록 테마 컬러 */
 .desk-card.theme-pink {
   border-color: #f472b6;
-  box-shadow: 0 6px 0 #f43f5e;
+  box-shadow: 0 5px 0 #f43f5e;
   background: linear-gradient(180deg, #fdf2f8 0%, #ffffff 32%);
 }
 .desk-card.theme-yellow {
   border-color: #facc15;
-  box-shadow: 0 6px 0 #eab308;
+  box-shadow: 0 5px 0 #eab308;
   background: linear-gradient(180deg, #fefce8 0%, #ffffff 32%);
 }
 .desk-card.theme-mint {
   border-color: #4ade80;
-  box-shadow: 0 6px 0 #22c55e;
+  box-shadow: 0 5px 0 #22c55e;
   background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 32%);
 }
 .desk-card.theme-sky {
   border-color: #38bdf8;
-  box-shadow: 0 6px 0 #0284c7;
+  box-shadow: 0 5px 0 #0284c7;
   background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 32%);
 }
 .desk-card.theme-purple {
   border-color: #c084fc;
-  box-shadow: 0 6px 0 #9333ea;
+  box-shadow: 0 5px 0 #9333ea;
   background: linear-gradient(180deg, #faf5ff 0%, #ffffff 32%);
 }
 .desk-card.theme-orange {
   border-color: #fb923c;
-  box-shadow: 0 6px 0 #ea580c;
+  box-shadow: 0 5px 0 #ea580c;
   background: linear-gradient(180deg, #fff7ed 0%, #ffffff 32%);
 }
 
-/* 카드 상단: 번호 및 이름 */
 .card-header-row {
   display: flex;
   justify-content: space-between;
@@ -480,12 +469,12 @@ body {
 
 .student-number-circle {
   font-family: var(--font-display);
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: #ffffff;
   border: 2px solid #e5e7eb;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -496,16 +485,97 @@ body {
 
 .student-name-text {
   font-family: var(--font-display);
-  font-size: 20px;
+  font-size: 19px;
   color: #1f2937;
   letter-spacing: -0.5px;
+}
+
+/* 1지망/2지망/3지망 결과 배지 */
+.rank-badge {
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rank-badge.rank-1 {
+  background: #fef08a;
+  color: #854d0e;
+  border: 1.5px solid #facc15;
+}
+.rank-badge.rank-2 {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1.5px solid #7dd3fc;
+}
+.rank-badge.rank-3 {
+  background: #ffedd5;
+  color: #c2410c;
+  border: 1.5px solid #fdba74;
+}
+.rank-badge.rank-other {
+  background: #f3f4f6;
+  color: #4b5563;
+  border: 1.5px solid #d1d5db;
+}
+
+.cute-role-bubble {
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px dashed #e5e7eb;
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.role-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.role-big-emoji {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.role-title-label {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: #111827;
+}
+
+.role-explain-text {
+  font-size: 12.5px;
+  color: #4b5563;
+  line-height: 1.45;
+  word-break: keep-all;
+}
+
+/* 카드 하단 희망 지망 내역 요약 */
+.card-wishes-summary {
+  font-size: 11.5px;
+  color: #64748b;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.card-action-btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 2px;
 }
 
 .btn-card-mini-swap {
   background: #f3f4f6;
   border: 1px solid #d1d5db;
-  border-radius: 10px;
-  padding: 4px 8px;
+  border-radius: 8px;
+  padding: 3px 8px;
   font-size: 12px;
   font-family: var(--font-display);
   color: #4b5563;
@@ -519,43 +589,7 @@ body {
   color: #0369a1;
 }
 
-/* 카드 중앙: 역할 알림 박스 */
-.cute-role-bubble {
-  background: rgba(255, 255, 255, 0.95);
-  border: 2px dashed #e5e7eb;
-  border-radius: 16px;
-  padding: 12px 14px;
-}
-
-.role-title-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.role-big-emoji {
-  font-size: 28px;
-  line-height: 1;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
-}
-
-.role-title-label {
-  font-family: var(--font-display);
-  font-size: 17px;
-  color: #111827;
-}
-
-.role-explain-text {
-  font-size: 13px;
-  color: #4b5563;
-  line-height: 1.45;
-  word-break: keep-all;
-}
-
-/* ==========================================================================
-   표 뷰 (정돈된 테이블)
-   ========================================================================== */
+/* 표 뷰 */
 .kids-table-wrap {
   background: #ffffff;
   border: 3px solid #fed7aa;
@@ -575,13 +609,13 @@ body {
   background: #fff7ed;
   color: #c2410c;
   font-size: 15px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   border-bottom: 2px solid #fed7aa;
 }
 
 .kids-table td {
-  padding: 12px 16px;
-  font-size: 14px;
+  padding: 10px 14px;
+  font-size: 13.5px;
   color: #374151;
   border-bottom: 1px dashed #f3f4f6;
   vertical-align: middle;
@@ -592,59 +626,449 @@ body {
 }
 
 /* ==========================================================================
-   초기 안내 상태 (Empty State)
+   동점 발생 시 실제 교실 가위바위보 모달 (#rps-pause-modal)
    ========================================================================== */
-.kids-empty-state {
-  background: #ffffff;
-  border: 3px dashed #fed7aa;
-  border-radius: 26px;
-  padding: 50px 20px;
-  text-align: center;
-  margin-top: 10px;
+.rps-alert-card {
+  background: #fffbeb;
+  border: 3px solid #f59e0b;
+  border-radius: 18px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 0 #d97706;
 }
 
-.empty-mascot-box {
-  width: 76px;
-  height: 76px;
-  background: #fef08a;
-  border: 3px solid #facc15;
-  border-radius: 24px;
-  display: flex;
+.rps-badge-header {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  font-size: 40px;
-  margin: 0 auto 16px;
-  box-shadow: 0 4px 0 #ca8a04;
-  animation: bounce 2s infinite ease-in-out;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-.kids-empty-state h3 {
+  gap: 6px;
+  background: #ef4444;
+  color: #ffffff;
   font-family: var(--font-display);
-  font-size: 22px;
-  color: #4a2818;
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 20px;
   margin-bottom: 8px;
 }
 
-.kids-empty-state p {
-  font-size: 15px;
-  color: #78716c;
-  max-width: 440px;
-  margin: 0 auto 20px;
-  line-height: 1.6;
+.rps-role-title-callout {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: #92400e;
+  margin-bottom: 6px;
 }
 
-/* ==========================================
-   모달 팝업
-   ========================================== */
+.rps-instruction-banner {
+  background: #ffffff;
+  border: 2px dashed #f59e0b;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #78350f;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+
+/* 가위바위보 후보 학생 체크 선택 박스 */
+.rps-competitors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.competitor-item {
+  background: #ffffff;
+  border: 2px solid #fed7aa;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.competitor-item:hover {
+  border-color: #f97316;
+  background: #fff7ed;
+}
+
+.competitor-item.winner-selected {
+  border-color: #22c55e;
+  background: #f0fdf4;
+  box-shadow: 0 3px 0 #16a34a;
+}
+
+.competitor-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.competitor-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: #1f2937;
+}
+
+.competitor-wish-rank {
+  font-size: 12.5px;
+  color: #6b7280;
+}
+
+.competitor-check-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: transparent;
+}
+
+.competitor-item.winner-selected .competitor-check-icon {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   학생 희망 역할 조사/입력 모달 (#wishes-modal) - 역할 우선 & 123번 순서
+   ========================================================================== */
+.wishes-view-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  background: #f8fafc;
+  padding: 4px;
+  border-radius: 14px;
+  border: 1.5px solid #e2e8f0;
+}
+
+.wishes-view-tab-btn {
+  flex: 1;
+  padding: 9px 14px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.wishes-view-tab-btn.active {
+  background: #ffffff;
+  color: #d97706;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border: 1.5px solid #fde047;
+}
+
+.wishes-info-alert {
+  background: #fffbeb;
+  border: 1.5px solid #fde047;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #92400e;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.badge-rps-warning {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.wishes-table-container {
+  max-height: 440px;
+  overflow-y: auto;
+  border: 1.5px solid #fed7aa;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.wishes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.wishes-table th {
+  position: sticky;
+  top: 0;
+  background: #fff7ed;
+  color: #9a3412;
+  font-family: var(--font-display);
+  padding: 11px 12px;
+  border-bottom: 2px solid #fed7aa;
+  z-index: 2;
+  font-size: 13.5px;
+}
+
+.wishes-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.wishes-table tr:hover td {
+  background: #fffdf5;
+}
+
+/* 역할 셀 (맨 앞) */
+.role-cell-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.role-cell-main {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.role-cell-emoji {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.role-cell-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14.5px;
+  color: #1e293b;
+}
+
+.role-cap-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.btn-cap-adj {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: all 0.1s ease;
+}
+
+.btn-cap-adj:hover {
+  background: #fef08a;
+  border-color: #eab308;
+  color: #854d0e;
+}
+
+/* 학생 지원자 칩 목록 */
+.applicant-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.student-chip-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 3px 8px 3px 6px;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.student-chip-tag:hover {
+  border-color: #f59e0b;
+  background: #fffbeb;
+  transform: translateY(-1px);
+}
+
+.student-chip-tag.rank-1-chip {
+  background: #fef3c7;
+  border-color: #fcd34d;
+  color: #92400e;
+}
+
+.student-chip-tag.rank-2-chip {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.student-chip-tag.rank-3-chip {
+  background: #f0f9ff;
+  border-color: #bae6fd;
+  color: #0369a1;
+}
+
+.student-chip-tag .chip-num {
+  font-weight: 700;
+  color: #d97706;
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  background: #ffffff;
+  padding: 1px 5px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.student-chip-tag .chip-name {
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.student-chip-tag .chip-remove {
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 0 2px;
+  margin-left: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.student-chip-tag .chip-remove:hover {
+  color: #ef4444;
+}
+
+.btn-add-applicant {
+  border: 1.5px dashed #cbd5e1;
+  background: #ffffff;
+  color: #64748b;
+  border-radius: 20px;
+  padding: 3px 8px;
+  font-size: 11.5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition: all 0.15s ease;
+}
+
+.btn-add-applicant:hover {
+  border-color: #38bdf8;
+  background: #f0f9ff;
+  color: #0284c7;
+}
+
+/* 경쟁 상태 뱃지 */
+.badge-status-hot {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #fee2e2;
+  border: 1.5px solid #fca5a5;
+  color: #b91c1c;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  text-align: center;
+  line-height: 1.25;
+}
+
+.badge-status-fit {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #dcfce7;
+  border: 1.5px solid #86efac;
+  color: #15803d;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.badge-status-empty {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  color: #94a3b8;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-family: var(--font-display);
+}
+
+/* 학생 번호순 테이블 (탭 2) */
+.student-id-name-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-display);
+}
+
+.student-id-name-cell strong {
+  font-size: 14.5px;
+  color: #1e293b;
+}
+
+.wishes-table select {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1.5px solid #fed7aa;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  background: #fffdf9;
+  outline: none;
+}
+
+.wishes-table select:focus {
+  border-color: #f97316;
+}
+
+/* ==========================================================================
+   모달 공통 스타일
+   ========================================================================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(45, 30, 20, 0.45);
+  background: rgba(45, 30, 20, 0.5);
   backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
@@ -664,7 +1088,7 @@ body {
 .modal-content {
   background: #ffffff;
   width: 100%;
-  max-width: 620px;
+  max-width: 680px;
   max-height: 90vh;
   border-radius: 24px;
   border: 3px solid #fcd34d;
@@ -685,7 +1109,7 @@ body {
 
 .modal-header h3 {
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 19px;
   color: #92400e;
   display: flex;
   align-items: center;
@@ -716,9 +1140,8 @@ body {
   gap: 10px;
 }
 
-/* 폼 스타일 */
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .form-group label {
@@ -735,7 +1158,7 @@ body {
   width: 100%;
   font-family: var(--font-body);
   font-size: 14px;
-  padding: 10px 12px;
+  padding: 9px 12px;
   border: 2px solid #fed7aa;
   border-radius: 12px;
   background: #fffdf9;
@@ -799,7 +1222,7 @@ body {
   transform: translateX(-50%) translateY(100px);
   background: #362923;
   color: #ffffff;
-  padding: 12px 22px;
+  padding: 12px 24px;
   border-radius: 30px;
   font-family: var(--font-display);
   font-size: 15px;
@@ -819,7 +1242,7 @@ body {
 }
 
 /* ==========================================================================
-   A4 교실 게시판 인쇄용 스타일 (프린트 전용 구조)
+   A4 교실 게시판 인쇄용 스타일 (24명 2열 12행 완벽 레이아웃)
    ========================================================================== */
 #print-section {
   display: none;
@@ -828,15 +1251,15 @@ body {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 10mm 12mm 10mm 12mm;
+    margin: 8mm 10mm 8mm 10mm;
   }
 
   body {
     background: #ffffff !important;
     color: #000000 !important;
     font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif !important;
-    font-size: 11pt;
-    line-height: 1.3;
+    font-size: 10pt;
+    line-height: 1.25;
     padding: 0;
     margin: 0;
   }
@@ -856,16 +1279,16 @@ body {
 
   .print-header {
     text-align: center;
-    border-bottom: 2.5px solid #000000;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
   }
 
   .print-header h1 {
-    font-size: 20pt;
+    font-size: 18pt;
     font-weight: 800;
     letter-spacing: -0.5px;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     color: #000000;
   }
 
@@ -873,38 +1296,38 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 9.5pt;
+    font-size: 9pt;
     font-weight: 600;
     color: #333333;
-    margin-top: 6px;
+    margin-top: 4px;
   }
 
   .print-motto {
     background: #f8fafc;
     border: 1px dashed #64748b;
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 4px;
-    font-size: 9pt;
+    font-size: 8.5pt;
     text-align: center;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
 
   .print-table-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 10px;
   }
 
   .print-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 9pt;
+    font-size: 8.5pt;
   }
 
   .print-table th,
   .print-table td {
     border: 1px solid #475569;
-    padding: 6px;
+    padding: 4.5px 4px;
     text-align: center;
     vertical-align: middle;
   }
@@ -918,51 +1341,57 @@ body {
   }
 
   .print-table td.col-num {
-    width: 28px;
+    width: 26px;
     font-weight: 700;
   }
 
   .print-table td.col-name {
-    width: 60px;
+    width: 58px;
     font-weight: 700;
-    font-size: 9.5pt;
+    font-size: 9pt;
   }
 
   .print-table td.col-role {
-    width: 80px;
+    width: 78px;
     font-weight: 700;
     text-align: left;
-    padding-left: 6px;
+    padding-left: 5px;
+  }
+
+  .print-table td.col-wish {
+    width: 48px;
+    font-weight: 700;
+    font-size: 8pt;
   }
 
   .print-table td.col-desc {
     text-align: left;
-    font-size: 8pt;
-    line-height: 1.25;
-    padding: 4px 6px;
+    font-size: 7.5pt;
+    line-height: 1.2;
+    padding: 3px 4px;
   }
 
   .print-table td.col-check {
-    width: 32px;
+    width: 28px;
   }
 
   .print-footer-sign {
-    margin-top: 14px;
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    font-size: 9pt;
+    font-size: 8.5pt;
     border-top: 1px solid #cbd5e1;
-    padding-top: 10px;
+    padding-top: 8px;
   }
 
   .sign-box {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     border: 1px solid #000000;
-    padding: 6px 16px;
-    font-size: 9.5pt;
+    padding: 4px 14px;
+    font-size: 9pt;
   }
 }
 
@@ -971,7 +1400,7 @@ body {
    ========================================================================== */
 @media (max-width: 768px) {
   .cute-header {
-    padding: 16px;
+    padding: 14px;
     flex-direction: column;
     align-items: flex-start;
   }
@@ -997,5 +1426,23 @@ body {
 
   .kids-cards-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   PWA 앱 설치 버튼 및 전용 앱 모드 스타일
+   ========================================================================== */
+#btn-install-app {
+  animation: gentle-pulse 3s infinite ease-in-out;
+}
+
+@keyframes gentle-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+@media (display-mode: standalone) {
+  #btn-install-app {
+    display: none !important;
   }
 }
